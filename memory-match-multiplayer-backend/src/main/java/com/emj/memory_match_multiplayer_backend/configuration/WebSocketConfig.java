@@ -1,4 +1,4 @@
-package com.emj.memory_match_multiplayer_backend;
+package com.emj.memory_match_multiplayer_backend.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
