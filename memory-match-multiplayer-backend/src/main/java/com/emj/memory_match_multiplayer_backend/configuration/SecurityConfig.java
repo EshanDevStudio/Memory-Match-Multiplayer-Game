@@ -5,6 +5,8 @@ import com.emj.memory_match_multiplayer_backend.service.CustomUserDetailsService
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -61,6 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req -> req
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(
