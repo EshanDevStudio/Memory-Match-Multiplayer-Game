@@ -5,6 +5,17 @@ import { tokenStorage } from './tokenStorage.js';
 const AuthContext = createContext(null);
 
 
+// reads the username from the JWT payload
+function readUsername(token) {
+  try {
+    const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(payload)).sub || null;
+  } catch {
+    return null;
+  }
+}
+
+
 export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(() => tokenStorage.getAccessToken());
 
@@ -18,6 +29,8 @@ export function AuthProvider({ children }) {
 
   const value = useMemo(
     () => ({
+      isAuthenticated: Boolean(accessToken),
+      username: accessToken ? readUsername(accessToken) : null,
       login,
       register
     }),

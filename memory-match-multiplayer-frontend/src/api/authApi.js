@@ -6,3 +6,7 @@ export const authApi = {
   login: (username, password) => api.post('/api/auth/login', { username, password }),
 };
 
+export const secureApi = {
+  //any endpoint that requires a valid JWT
+  hello: () => api.get('/api/secure/hello'),
+};

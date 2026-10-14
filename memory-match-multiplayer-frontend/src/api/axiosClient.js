@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { tokenStorage } from '../auth/tokenStorage.js';
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -7,6 +7,16 @@ const BASE_URL = 'http://localhost:8080';
 export const api = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
+});
+
+
+//add the JWT as a Bearer token on every request
+api.interceptors.request.use((config) => {
+  const token = tokenStorage.getAccessToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 
@@ -18,3 +28,4 @@ export function getErrorMessage(error, fallback = 'Something went wrong. Please 
   if (typeof data === 'string' && data) return data;
   return data?.message || data?.error || fallback;
 }
+

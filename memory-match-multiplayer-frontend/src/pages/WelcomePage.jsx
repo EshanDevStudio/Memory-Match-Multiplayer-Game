@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext.jsx';
 import { getErrorMessage } from '../api/axiosClient.js';
 
 export default function WelcomePage() {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+
+  if (isAuthenticated) return <Navigate to="/home" replace />;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,7 +20,7 @@ export default function WelcomePage() {
     setSubmitting(true);
     try {
       await login(username.trim(), password);
-      console.log('login success');
+      navigate('/home', { replace: true });
     } catch (err) {
       setError(
         err.response?.status === 401 || err.response?.status === 403

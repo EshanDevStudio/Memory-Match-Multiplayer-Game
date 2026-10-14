@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext.jsx';
 import { getErrorMessage } from '../api/axiosClient.js';
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+
+  if (isAuthenticated) return <Navigate to="/home" replace />;
 
 
   async function handleSubmit(e) {
