@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext.jsx';
 import { getErrorMessage } from '../api/axiosClient.js';
 
@@ -10,6 +10,7 @@ export default function RegisterPage() {
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
 
   if (isAuthenticated) return <Navigate to="/home" replace />;
@@ -26,7 +27,7 @@ export default function RegisterPage() {
     setSubmitting(true);
     try {
       await register(username.trim(), password);
-      console.log("reg success");
+      navigate('/', { replace: true, state: { notice: 'Account created. Sign in to continue.' } });
     } catch (err) {
       setError(
         err.response?.status === 409
@@ -82,6 +83,8 @@ export default function RegisterPage() {
             {submitting ? 'Creating account…' : 'Create account'}
           </button>
         </form>
+
+        <p className="switch">Already registered? <Link to="/">Sign in</Link></p>
       </div>
     </div>
   );

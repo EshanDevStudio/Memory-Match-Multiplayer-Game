@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext.jsx';
 import { getErrorMessage } from '../api/axiosClient.js';
 
 export default function WelcomePage() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // message passed from the registration page after a successful sign-up
+  const notice = location.state?.notice;
 
   if (isAuthenticated) return <Navigate to="/home" replace />;
 
@@ -49,6 +52,8 @@ export default function WelcomePage() {
           <p className="muted">Enter your username and password to continue.</p>
 
           {error && <div className="alert alert-error" role="alert">{error}</div>}
+          {notice && <div className="alert alert-success" role="status">{notice}</div>}
+
 
           <form onSubmit={handleSubmit} noValidate>
             <label htmlFor="username">Username</label>
