@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
       login,
       register
     }),
-    [register, login]
+    [accessToken, register, login]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
